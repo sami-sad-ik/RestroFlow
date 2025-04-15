@@ -3,7 +3,7 @@ import Navbar from "../Shared/Navbar";
 
 const Root = () => {
   return (
-    <div>
+    <div className="font-lato">
       <Navbar />
       <Outlet />
     </div>
