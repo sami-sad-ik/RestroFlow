@@ -16,7 +16,9 @@ const Navbar = () => {
   };
   const navLinks = (
     <>
-      <NavLink className="my-2 mx-2 transition-colors font-semibold tracking-wider duration-300 transform  hover:text-blue-500  md:mx-4 md:my-0">
+      <NavLink
+        to={"/"}
+        className="my-2 mx-2 transition-colors font-semibold tracking-wider duration-300 transform  hover:text-blue-500  md:mx-4 md:my-0">
         Home
       </NavLink>
       <NavLink className="my-2 mx-2 transition-colors font-semibold tracking-wider duration-300 transform  hover:text-blue-500  md:mx-4 md:my-0">
@@ -25,7 +27,9 @@ const Navbar = () => {
       <NavLink className="my-2 mx-2 transition-colors font-semibold tracking-wider duration-300 transform  hover:text-blue-500  md:mx-4 md:my-0">
         Gallery
       </NavLink>
-      <NavLink className="my-2 mx-2 transition-colors font-semibold tracking-wider duration-300 transform  hover:text-blue-500  md:mx-4 md:my-0">
+      <NavLink
+        to={"/login"}
+        className="my-2 mx-2 transition-colors font-semibold tracking-wider duration-300 transform  hover:text-blue-500  md:mx-4 md:my-0">
         Login
       </NavLink>
     </>
@@ -34,24 +38,9 @@ const Navbar = () => {
     <div className="navbar bg-base-100 shadow-sm">
       <div className="flex-grow">
         <Link>
-          <img className="w-24 h-12 " src="/Restro.png" alt="" />
+          <img className="w-24 h-12 " src="/Restro.png" alt="logo" />
         </Link>
       </div>
-      {/* <div className="flex-none ">
-        <Link className="my-2 mx-2 transition-colors duration-300 transform  hover:text-blue-500  md:mx-4 md:my-0">
-          Home
-        </Link>
-        <Link className="my-2 mx-2 transition-colors duration-300 transform  hover:text-blue-500  md:mx-4 md:my-0">
-          All Foods
-        </Link>
-        <Link className="my-2 mx-2 transition-colors duration-300 transform  hover:text-blue-500  md:mx-4 md:my-0">
-          Gallery
-        </Link>
-        <Link className="my-2 mx-2 transition-colors duration-300 transform  hover:text-blue-500  md:mx-4 md:my-0">
-          Login
-        </Link>
-        
-      </div> */}
       <div className="">
         <div className="dropdown dropdown-end">
           <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
