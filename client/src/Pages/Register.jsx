@@ -1,10 +1,36 @@
+import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
+import useAuth from "../Hooks/useAuth";
 
 const Register = () => {
+  const { createUser, updateUser } = useAuth();
+
+  const handleRegister = async (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const name = form.username.value;
+    const email = form.email.value;
+    const photo = form.photo.value;
+    const password = form.password.value;
+    const confirmPass = form.confirmPass.value;
+    if (password !== confirmPass) {
+      return toast.error("Password didn't matched!");
+    }
+    try {
+      const result = await createUser(email, password);
+      console.log(result.user);
+      await updateUser(name, photo);
+      toast.success("Sign Up successfull");
+    } catch (err) {
+      console.log(err);
+    }
+  };
   return (
     <section className="">
       <div className="container flex items-center justify-center min-h-screen px-6 mx-auto">
-        <form className="w-full max-w-md p-8 shadow-lg border border-base-300 rounded-lg">
+        <form
+          onSubmit={handleRegister}
+          className="w-full max-w-md p-8 shadow-lg border border-base-300 rounded-lg">
           <div className="w-fit mx-auto">
             <img className="w-24 h-12" src="/Restro.png" alt="" />
           </div>
@@ -23,10 +49,10 @@ const Register = () => {
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
-                stroke-width="2">
+                strokeWidth="2">
                 <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                   d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
                 />
               </svg>
@@ -34,6 +60,7 @@ const Register = () => {
 
             <input
               type="text"
+              name="username"
               className="block w-full py-3   border rounded-lg px-11 focus:border-blue-400  focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
               placeholder="Username"
             />
@@ -47,10 +74,10 @@ const Register = () => {
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
-                stroke-width="2">
+                strokeWidth="2">
                 <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                   d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
                 />
               </svg>
@@ -58,6 +85,7 @@ const Register = () => {
 
             <input
               type="email"
+              name="email"
               className="block w-full py-3  border rounded-lg px-11 focus:border-blue-400  focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
               placeholder="Email address"
             />
@@ -70,10 +98,10 @@ const Register = () => {
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
-                stroke-width="2">
+                strokeWidth="2">
                 <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                   d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"
                 />
               </svg>
@@ -81,6 +109,7 @@ const Register = () => {
 
             <input
               type="text"
+              name="photo"
               className="block w-full py-3   border rounded-lg px-11 focus:border-blue-400  focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
               placeholder="Photo URL"
             />
@@ -94,10 +123,10 @@ const Register = () => {
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
-                stroke-width="2">
+                strokeWidth="2">
                 <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                   d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
                 />
               </svg>
@@ -105,6 +134,7 @@ const Register = () => {
 
             <input
               type="password"
+              name="password"
               className="block w-full px-10 py-3  border rounded-lg  focus:border-blue-400  focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
               placeholder="Password"
             />
@@ -118,10 +148,10 @@ const Register = () => {
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
-                stroke-width="2">
+                strokeWidth="2">
                 <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                   d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
                 />
               </svg>
@@ -129,6 +159,7 @@ const Register = () => {
 
             <input
               type="password"
+              name="confirmPass"
               className="block w-full px-10 py-3  border rounded-lg  focus:border-blue-400 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
               placeholder="Confirm Password"
             />
