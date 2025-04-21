@@ -3,7 +3,7 @@ import useAuth from "../Hooks/useAuth";
 import toast from "react-hot-toast";
 
 const Login = () => {
-  const { signInUser } = useAuth();
+  const { signInUser, signInWithGoogle } = useAuth();
   const handleLogin = async (e) => {
     e.preventDefault();
     const form = e.target;
@@ -13,6 +13,13 @@ const Login = () => {
       const result = await signInUser(email, password);
       console.log(result.user);
       toast.success("Successfully signed in");
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  const handleGoogleSignIn = async () => {
+    try {
+      await signInWithGoogle();
     } catch (err) {
       console.log(err);
     }
@@ -41,10 +48,10 @@ const Login = () => {
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
-                stroke-width="2">
+                strokeWidth="2">
                 <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                   d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
                 />
               </svg>
@@ -66,10 +73,10 @@ const Login = () => {
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
-                stroke-width="2">
+                strokeWidth="2">
                 <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                   d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
                 />
               </svg>
@@ -91,7 +98,7 @@ const Login = () => {
             <p className="mt-4 text-center  ">or sign in with</p>
 
             <a
-              href="#"
+              onClick={handleGoogleSignIn}
               className="flex items-center justify-center px-6 py-3 mt-4  transition-colors duration-300 transform border rounded-lg hover:bg-base-300">
               <svg className="w-6 h-6 mx-2" viewBox="0 0 40 40">
                 <path

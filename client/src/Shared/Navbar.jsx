@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
+import useAuth from "../Hooks/useAuth";
 
 const Navbar = () => {
   const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
+  const { signOutUser, user, setUser } = useAuth();
   useEffect(() => {
     localStorage.setItem("theme", theme);
     document.querySelector("html").setAttribute("data-theme", theme);
@@ -14,34 +16,44 @@ const Navbar = () => {
       setTheme("light");
     }
   };
+  const handleSignOut = async () => {
+    try {
+      await signOutUser();
+      setUser(null);
+    } catch (err) {
+      console.log(err);
+    }
+  };
   const navLinks = (
     <>
       <NavLink
         to={"/"}
-        className="my-2 mx-2 transition-colors font-semibold tracking-wider duration-300 transform  hover:text-blue-500  md:mx-4 md:my-0">
+        className="my-2 mx-2 transition-colors font-semibold tracking-wider duration-300 transform  hover:text-blue-500  md:mx-2 md:my-0">
         Home
       </NavLink>
-      <NavLink className="my-2 mx-2 transition-colors font-semibold tracking-wider duration-300 transform  hover:text-blue-500  md:mx-4 md:my-0">
+      <NavLink className="my-2 mx-2 transition-colors font-semibold tracking-wider duration-300 transform  hover:text-blue-500  md:mx-2 md:my-0">
         All Foods
       </NavLink>
-      <NavLink className="my-2 mx-2 transition-colors font-semibold tracking-wider duration-300 transform  hover:text-blue-500  md:mx-4 md:my-0">
+      <NavLink className="my-2 mx-2 transition-colors font-semibold tracking-wider duration-300 transform  hover:text-blue-500  md:mx-2 md:my-0">
         Gallery
       </NavLink>
-      <NavLink
-        to={"/login"}
-        className="my-2 mx-2 transition-colors font-semibold tracking-wider duration-300 transform  hover:text-blue-500  md:mx-4 md:my-0">
-        Login
-      </NavLink>
+      {!user && (
+        <NavLink
+          to={"/login"}
+          className="my-2 mx-2 transition-colors font-semibold tracking-wider duration-300 transform  hover:text-blue-500  md:mx-2 md:my-0">
+          Login
+        </NavLink>
+      )}
     </>
   );
   return (
     <div className="navbar bg-base-100 shadow-sm">
-      <div className="flex-grow">
-        <Link>
+      <div className="flex-1">
+        <Link to={"/"} className="inline-flex items-center">
           <img className="w-24 h-12 " src="/Restro.png" alt="logo" />
         </Link>
       </div>
-      <div className="">
+      <div className="flex-none">
         <div className="dropdown dropdown-end">
           <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
             <svg
@@ -66,39 +78,45 @@ const Navbar = () => {
         </div>
       </div>
       <div className="navbar-center hidden lg:flex">
-        <ul className="menu menu-horizontal px-1">{navLinks}</ul>
+        <ul className="menu menu-horizontal px-2">{navLinks}</ul>
       </div>
-      <div className="dropdown dropdown-end">
-        <div
-          tabIndex={0}
-          role="button"
-          className="btn btn-ghost btn-circle avatar">
-          <div className="w-10 rounded-full">
-            <img
-              alt="Tailwind CSS Navbar component"
-              src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
-            />
+      {user && (
+        <div className="dropdown dropdown-end">
+          <div
+            tabIndex={0}
+            role="button"
+            className="btn btn-ghost btn-circle avatar">
+            <div className="w-10 rounded-full">
+              <img
+                alt="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
+                src={user?.photoURL}
+              />
+            </div>
           </div>
+          <ul
+            tabIndex={0}
+            className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 px-0 space-y-1 shadow">
+            <Link
+              to={"/add-food"}
+              className="py-2 hover:bg-gray-300 rounded-md px-2 transition-colors duration-300 transform font-semibold hover:text-blue-500  md:mx-2">
+              Add a food item
+            </Link>
+            <Link className="py-2 hover:bg-gray-300 rounded-md px-2 transition-colors duration-300 transform font-semibold hover:text-blue-500  md:mx-2">
+              My added food items
+            </Link>
+            <Link className="py-2 hover:bg-gray-300 rounded-md px-2 transition-colors duration-300 transform font-semibold  hover:text-blue-500  md:mx-2">
+              My ordered food items
+            </Link>
+            <button
+              onClick={handleSignOut}
+              className="py-2 bg-gray-300 rounded-md px-2 text-left text-red-500 font-bold transition-colors duration-300 transform hover:bg-gray-400  md:mx-2">
+              Logout
+            </button>
+          </ul>
         </div>
-        <ul
-          tabIndex={0}
-          className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 px-0 space-y-1 shadow">
-          <Link className="py-2 hover:bg-gray-300 rounded-md px-2 transition-colors duration-300 transform font-semibold hover:text-blue-500  md:mx-4">
-            My added food items
-          </Link>
-          <Link className="py-2 hover:bg-gray-300 rounded-md px-2 transition-colors duration-300 transform font-semibold hover:text-blue-500  md:mx-4">
-            Add a food item
-          </Link>
-          <Link className="py-2 hover:bg-gray-300 rounded-md px-2 transition-colors duration-300 transform font-semibold  hover:text-blue-500  md:mx-4">
-            My ordered food items
-          </Link>
-          <button className="py-2 bg-gray-300 rounded-md px-2 text-left text-red-500 font-bold transition-colors duration-300 transform hover:bg-gray-400  md:mx-4">
-            Logout
-          </button>
-        </ul>
-      </div>
+      )}
 
-      <label className="mr-3 toggle text-base-content">
+      <label className="mx-3 toggle text-base-content">
         <input
           onChange={handleToggle}
           type="checkbox"
