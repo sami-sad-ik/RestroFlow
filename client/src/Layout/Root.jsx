@@ -4,8 +4,10 @@ import Navbar from "../Shared/Navbar";
 const Root = () => {
   return (
     <div className="font-lato ">
-      <Navbar />
-      <div className="w-11/12 mx-auto">
+      <div className="h-[70px]">
+        <Navbar />
+      </div>
+      <div className="w-11/12 mx-auto ">
         <Outlet />
       </div>
     </div>

@@ -28,26 +28,54 @@ const Navbar = () => {
     <>
       <NavLink
         to={"/"}
-        className="my-2 mx-2 transition-colors font-semibold tracking-wider duration-300 transform  hover:text-blue-500  md:mx-2 md:my-0">
+        className={({ isActive }) =>
+          `my-2 mx-2 transition-colors font-semibold tracking-wider duration-300 transform  ${
+            isActive
+              ? "text-blue-500 border-b-2 border-blue-500 "
+              : "hover:text-blue-500"
+          }  md:mx-2 md:my-0`
+        }>
         Home
       </NavLink>
-      <NavLink className="my-2 mx-2 transition-colors font-semibold tracking-wider duration-300 transform  hover:text-blue-500  md:mx-2 md:my-0">
+      <NavLink
+        to={"/all-foods"}
+        className={({ isActive }) =>
+          `my-2 mx-2 transition-colors font-semibold tracking-wider duration-300 transform  ${
+            isActive
+              ? "text-blue-500 border-b-2 border-blue-500 "
+              : "hover:text-blue-500"
+          }  md:mx-2 md:my-0`
+        }>
         All Foods
       </NavLink>
-      <NavLink className="my-2 mx-2 transition-colors font-semibold tracking-wider duration-300 transform  hover:text-blue-500  md:mx-2 md:my-0">
+      <NavLink
+        to={"/gallery"}
+        className={({ isActive }) =>
+          `my-2 mx-2 transition-colors font-semibold tracking-wider duration-300 transform  ${
+            isActive
+              ? "text-blue-500 border-b-2 border-blue-500 "
+              : "hover:text-blue-500"
+          }  md:mx-2 md:my-0`
+        }>
         Gallery
       </NavLink>
       {!user && (
         <NavLink
           to={"/login"}
-          className="my-2 mx-2 transition-colors font-semibold tracking-wider duration-300 transform  hover:text-blue-500  md:mx-2 md:my-0">
+          className={({ isActive }) =>
+            `my-2 mx-2 transition-colors font-semibold tracking-wider duration-300 transform  ${
+              isActive
+                ? "text-blue-500 border-b-2 border-blue-500 "
+                : "hover:text-blue-500"
+            }  md:mx-2 md:my-0`
+          }>
           Login
         </NavLink>
       )}
     </>
   );
   return (
-    <div className="navbar bg-base-100 shadow-sm">
+    <div className="navbar z-10 fixed bg-base-100 shadow-md">
       <div className="flex-1">
         <Link to={"/"} className="inline-flex items-center">
           <img className="w-24 h-12 " src="/Restro.png" alt="logo" />
@@ -72,7 +100,7 @@ const Navbar = () => {
           </div>
           <ul
             tabIndex={0}
-            className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 px-0 space-y-1 shadow">
+            className="menu menu-sm dropdown-content bg-base-100 rounded-box z-10 mt-3 w-52 px-0 space-y-1 shadow">
             {navLinks}
           </ul>
         </div>
@@ -95,18 +123,26 @@ const Navbar = () => {
           </div>
           <ul
             tabIndex={0}
-            className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 px-0 space-y-1 shadow">
-            <Link
+            className="menu menu-sm dropdown-content bg-base-100 rounded-box z-10 mt-3 w-52 px-0 space-y-1 shadow">
+            <NavLink
               to={"/add-food"}
-              className="py-2 hover:bg-gray-300 rounded-md px-2 transition-colors duration-300 transform font-semibold hover:text-blue-500  md:mx-2">
+              className={({ isActive }) =>
+                `py-2  rounded-md px-2 transition-colors duration-300 transform font-semibold ${
+                  isActive
+                    ? "text-blue-500  bg-gray-300"
+                    : "hover:bg-gray-300 hover:text-blue-500 "
+                }  md:mx-2`
+              }>
               Add a food item
-            </Link>
-            <Link className="py-2 hover:bg-gray-300 rounded-md px-2 transition-colors duration-300 transform font-semibold hover:text-blue-500  md:mx-2">
+            </NavLink>
+            <NavLink
+              className={`py-2  rounded-md px-2 transition-colors duration-300 transform font-semibold hover:bg-gray-300 hover:text-blue-500  md:mx-2`}>
               My added food items
-            </Link>
-            <Link className="py-2 hover:bg-gray-300 rounded-md px-2 transition-colors duration-300 transform font-semibold  hover:text-blue-500  md:mx-2">
+            </NavLink>
+            <NavLink
+              className={`py-2  rounded-md px-2 transition-colors duration-300 transform font-semibold hover:bg-gray-300  hover:text-blue-500  md:mx-2`}>
               My ordered food items
-            </Link>
+            </NavLink>
             <button
               onClick={handleSignOut}
               className="py-2 bg-gray-300 rounded-md px-2 text-left text-red-500 font-bold transition-colors duration-300 transform hover:bg-gray-400  md:mx-2">
