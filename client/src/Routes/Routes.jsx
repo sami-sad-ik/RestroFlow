@@ -6,15 +6,31 @@ import Register from "../Pages/Register";
 import AddFood from "../Pages/AddFood";
 import AllFoods from "../Pages/AllFoods";
 import Gallery from "../Pages/Gallery";
+import FoodDetails from "../Pages/FoodDetails";
+import Error from "../Pages/Error";
+import Purchase from "../Pages/Purchase";
 
 const routes = createBrowserRouter([
   {
     path: "/",
     element: <Root />,
+    errorElement: <Error />,
     children: [
       {
         path: "/",
         element: <Home />,
+      },
+      {
+        path: "/food/:id",
+        element: <FoodDetails />,
+        loader: ({ params }) =>
+          fetch(`${import.meta.env.VITE_API_URL}/food/${params.id}`),
+      },
+      {
+        path: "/purchase/:id",
+        element: <Purchase />,
+        loader: ({ params }) =>
+          fetch(`${import.meta.env.VITE_API_URL}/food/${params.id}`),
       },
       {
         path: "/all-foods",

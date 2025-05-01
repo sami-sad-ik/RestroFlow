@@ -33,6 +33,7 @@ const AddFood = () => {
       const { data } = await axiosSecure.post(`/food`, foodDetails);
       console.log(data);
       toast.success("Food added successfully");
+      form.reset();
     } catch (err) {
       console.log(err);
     }
