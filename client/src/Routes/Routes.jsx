@@ -9,6 +9,7 @@ import Gallery from "../Pages/Gallery";
 import FoodDetails from "../Pages/FoodDetails";
 import Error from "../Pages/Error";
 import Purchase from "../Pages/Purchase";
+import PrivateRoute from "./PrivateRoute";
 
 const routes = createBrowserRouter([
   {
@@ -28,7 +29,11 @@ const routes = createBrowserRouter([
       },
       {
         path: "/purchase/:id",
-        element: <Purchase />,
+        element: (
+          <PrivateRoute>
+            <Purchase />
+          </PrivateRoute>
+        ),
         loader: ({ params }) =>
           fetch(`${import.meta.env.VITE_API_URL}/food/${params.id}`),
       },
@@ -42,7 +47,11 @@ const routes = createBrowserRouter([
       },
       {
         path: "/add-food",
-        element: <AddFood />,
+        element: (
+          <PrivateRoute>
+            <AddFood />
+          </PrivateRoute>
+        ),
       },
       {
         path: "/login",

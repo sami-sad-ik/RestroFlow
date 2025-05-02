@@ -1,13 +1,19 @@
 import { useLoaderData } from "react-router-dom";
 import useAuth from "../Hooks/useAuth";
+import useAxiosSecure from "../Hooks/useAxiosSecure";
+import toast from "react-hot-toast";
 
 const Purchase = () => {
   const { user } = useAuth();
+  const axiosSecure = useAxiosSecure();
   const { _id, foodName, foodImage, price, owner } = useLoaderData();
 
-  const handlePurchase = (e) => {
+  const handlePurchase = async (e) => {
     e.preventDefault();
     const form = e.target;
+    if (user?.email === owner?.email) {
+      return toast.error("Can't purchase own item!");
+    }
     const purchasedQuantity = form.quantity.value;
     const purchase = {
       fooId: _id,
@@ -15,10 +21,17 @@ const Purchase = () => {
       foodImage,
       price,
       purchasedQuantity,
-      purchasedAt: new Date().toLocaleString(),
+      purchasedAt: new Date(),
       email: user?.email,
       owner_email: owner?.email,
     };
+    try {
+      const { data } = await axiosSecure.post("/purchase", purchase);
+      console.log(data);
+      toast.success("Successfully purchased");
+    } catch (err) {
+      console.log(err.message);
+    }
   };
   return (
     <section className="max-w-4xl mt-5 p-6 mx-auto  rounded-md shadow-lg ">
@@ -27,7 +40,7 @@ const Purchase = () => {
       <form onSubmit={handlePurchase}>
         <div className="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2">
           <div>
-            <label>{price}</label>
+            <label>Price</label>
             <input
               type="number"
               name="price"

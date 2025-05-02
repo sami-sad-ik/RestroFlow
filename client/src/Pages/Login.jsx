@@ -1,9 +1,12 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import useAuth from "../Hooks/useAuth";
 import toast from "react-hot-toast";
 
 const Login = () => {
   const { signInUser, signInWithGoogle } = useAuth();
+  const location = useLocation();
+  const navigate = useNavigate();
+  const to = location?.pathname;
   const handleLogin = async (e) => {
     e.preventDefault();
     const form = e.target;
@@ -13,6 +16,7 @@ const Login = () => {
       const result = await signInUser(email, password);
       console.log(result.user);
       toast.success("Successfully signed in");
+      navigate(to);
     } catch (err) {
       console.log(err);
     }
@@ -20,6 +24,7 @@ const Login = () => {
   const handleGoogleSignIn = async () => {
     try {
       await signInWithGoogle();
+      navigate(to);
     } catch (err) {
       console.log(err);
     }

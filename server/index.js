@@ -28,6 +28,7 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     const foodCollection = client.db("RestroFlow").collection("food");
+    const purchaseCollection = client.db("RestroFlow").collection("purchase");
 
     // Connect the client to the server	(optional starting in v4.7)
     // await client.connect();
@@ -47,6 +48,12 @@ async function run() {
     app.post("/food", async (req, res) => {
       const foodData = req.body;
       const result = await foodCollection.insertOne(foodData);
+      res.send(result);
+    });
+
+    app.post("/purchase", async (req, res) => {
+      const purchaseData = req.body;
+      const result = await purchaseCollection.insertOne(purchaseData);
       res.send(result);
     });
     // Send a ping to confirm a successful connection
