@@ -6,7 +6,7 @@ const Login = () => {
   const { signInUser, signInWithGoogle } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
-  const to = location?.pathname;
+  const to = location?.pathname || "/";
   const handleLogin = async (e) => {
     e.preventDefault();
     const form = e.target;

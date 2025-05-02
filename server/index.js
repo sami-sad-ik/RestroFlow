@@ -45,6 +45,53 @@ async function run() {
       res.send(result);
     });
 
+    //get food added by specific user
+    app.get("/foods/:email", async (req, res) => {
+      const email = req.params.email;
+      const query = { "owner.email": email };
+      const result = await foodCollection.find(query).toArray();
+      res.send(result);
+    });
+
+    //get food purchased by specific user
+    app.get("/purchased/:email", async (req, res) => {
+      const email = req.params.email;
+      const query = { email };
+      const result = await purchaseCollection.find(query).toArray();
+      res.send(result);
+    });
+
+    //update foods
+    app.put("/food/:id", async (req, res) => {
+      const foodData = req.body;
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const options = { upsert: true };
+      const updatedDoc = {
+        $set: {
+          ...foodData,
+        },
+      };
+      const result = await foodCollection.updateOne(query, updatedDoc, options);
+      res.send(result);
+    });
+
+    //delete foods
+    app.delete("/foods/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await foodCollection.deleteOne(query);
+      res.send(result);
+    });
+
+    // delete purchased food
+    app.delete("/purchased/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await purchaseCollection.deleteOne(query);
+      res.send(result);
+    });
+
     app.post("/food", async (req, res) => {
       const foodData = req.body;
       const result = await foodCollection.insertOne(foodData);

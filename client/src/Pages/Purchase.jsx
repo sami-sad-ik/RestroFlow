@@ -6,7 +6,7 @@ import toast from "react-hot-toast";
 const Purchase = () => {
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
-  const { _id, foodName, foodImage, price, owner } = useLoaderData();
+  const { _id, foodName, foodImage, price, quantity, owner } = useLoaderData();
 
   const handlePurchase = async (e) => {
     e.preventDefault();
@@ -14,7 +14,11 @@ const Purchase = () => {
     if (user?.email === owner?.email) {
       return toast.error("Can't purchase own item!");
     }
-    const purchasedQuantity = form.quantity.value;
+
+    const purchasedQuantity = parseFloat(form.quantity.value);
+    if (purchasedQuantity > quantity) {
+      return toast.error("Insufficient stock available!");
+    }
     const purchase = {
       fooId: _id,
       foodName,
@@ -23,12 +27,14 @@ const Purchase = () => {
       purchasedQuantity,
       purchasedAt: new Date(),
       email: user?.email,
+      owner: owner?.name,
       owner_email: owner?.email,
     };
     try {
       const { data } = await axiosSecure.post("/purchase", purchase);
       console.log(data);
       toast.success("Successfully purchased");
+      form.reset();
     } catch (err) {
       console.log(err.message);
     }

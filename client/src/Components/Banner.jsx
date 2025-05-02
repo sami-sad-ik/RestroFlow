@@ -16,7 +16,7 @@ const Banner = () => {
           <p className="md:text-xl text-md px-7 font-light ">
             Savor the Flavor – Experience Culinary Excellence at RestroFlow
           </p>
-          <Link className="bg-yellow-500 p-2 md:text-lg text-sm rounded-[4px] hover:scale-[103%] hover:bg-yellow-600 active:bg-yellow-500 cursor-pointer duration-200 text-black font-semibold inline-block  ">
+          <Link className="bg-yellow-500 p-2 md:text-lg text-sm rounded-[4px] hover:scale-[102%] hover:bg-yellow-600 active:scale-[100%] cursor-pointer duration-200 text-black font-semibold inline-block  ">
             See all foods
           </Link>
         </div>

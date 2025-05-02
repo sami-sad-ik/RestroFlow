@@ -1,19 +1,30 @@
+import { useLoaderData } from "react-router-dom";
 import useAuth from "../Hooks/useAuth";
 import toast from "react-hot-toast";
 import useAxiosSecure from "../Hooks/useAxiosSecure";
 
-const AddFood = () => {
+const UpdateFood = () => {
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
-  const handleAddFood = async (e) => {
+  const {
+    _id,
+    foodName,
+    foodImage,
+    category,
+    origin,
+    quantity,
+    price,
+    description,
+  } = useLoaderData();
+  const handleUpdate = async (e) => {
     e.preventDefault();
     const form = e.target;
     const foodName = form.foodname.value;
     const foodImage = form.imageURL.value;
     const category = form.category.value;
     const origin = form.origin.value;
-    const quantity = parseFloat(form.quantity.value);
-    const price = parseFloat(form.price.value);
+    const quantity = form.quantity.value;
+    const price = form.price.value;
     const description = form.description.value;
     const foodDetails = {
       foodName,
@@ -28,27 +39,26 @@ const AddFood = () => {
         email: user?.email,
       },
     };
-
     try {
-      const { data } = await axiosSecure.post(`/food`, foodDetails);
+      const { data } = await axiosSecure.put(`/food/${_id}`, foodDetails);
       console.log(data);
-      toast.success("Food added successfully");
-      form.reset();
+      toast.success("Updated successfully");
     } catch (err) {
       console.log(err);
     }
   };
   return (
     <section className="max-w-4xl mt-5 p-6 mx-auto  rounded-md shadow-lg ">
-      <h2 className="text-2xl text-center font-semibold">Add a Food Item</h2>
+      <h2 className="text-2xl text-center font-semibold">Update Food Item</h2>
 
-      <form onSubmit={handleAddFood}>
+      <form onSubmit={handleUpdate}>
         <div className="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2">
           <div>
             <label>Food Name</label>
             <input
               type="text"
               name="foodname"
+              defaultValue={foodName}
               className="block w-full px-4 py-2 mt-2 bg-base-200 border border-base-300 rounded-md focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring"
             />
           </div>
@@ -58,6 +68,7 @@ const AddFood = () => {
             <input
               type="text"
               name="imageURL"
+              defaultValue={foodImage}
               className="block w-full px-4 py-2 mt-2 bg-base-200 border border-base-300 rounded-md focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring"
             />
           </div>
@@ -67,6 +78,7 @@ const AddFood = () => {
             <input
               type="text"
               name="category"
+              defaultValue={category}
               className="block w-full px-4 py-2 mt-2 bg-base-200 border border-base-300 rounded-md focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring"
             />
           </div>
@@ -76,6 +88,7 @@ const AddFood = () => {
             <input
               type="text"
               name="origin"
+              defaultValue={origin}
               className="block w-full px-4 py-2 mt-2 bg-base-200 border border-base-300 rounded-md focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring"
             />
           </div>
@@ -84,6 +97,7 @@ const AddFood = () => {
             <input
               type="number"
               name="price"
+              defaultValue={price}
               className="block w-full px-4 py-2 mt-2 bg-base-200 border border-base-300 rounded-md focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring"
             />
           </div>
@@ -93,29 +107,8 @@ const AddFood = () => {
             <input
               type="number"
               name="quantity"
+              defaultValue={quantity}
               className="block w-full px-4 py-2 mt-2 bg-base-200 border border-base-300 rounded-md focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring"
-            />
-          </div>
-
-          <div>
-            <label>Added by</label>
-            <input
-              type="text"
-              defaultValue={user?.displayName}
-              readOnly
-              name="username"
-              className="block w-full px-4 py-2 mt-2 bg-base-200 border border-base-300 rounded-md "
-            />
-          </div>
-
-          <div>
-            <label>Email</label>
-            <input
-              type="email"
-              defaultValue={user?.email}
-              readOnly
-              name="email"
-              className="block w-full px-4 py-2 mt-2 bg-base-200 border border-base-300 rounded-md "
             />
           </div>
         </div>
@@ -123,12 +116,13 @@ const AddFood = () => {
           <label>Short Description</label>
           <textarea
             className="block w-full px-4 py-2 mt-2 bg-base-200 border border-base-300 rounded-md focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40  focus:outline-none focus:ring"
-            name="description"></textarea>
+            name="description"
+            defaultValue={description}></textarea>
         </div>
 
         <div className="flex justify-end mt-6">
           <button className="px-8 py-2.5 leading-5 text-white transition-colors duration-300 transhtmlForm bg-gray-700 rounded-md hover:bg-gray-600 active:bg-gray-800 focus:outline-none focus:bg-gray-600">
-            Add Item
+            Update
           </button>
         </div>
       </form>
@@ -136,4 +130,4 @@ const AddFood = () => {
   );
 };
 
-export default AddFood;
+export default UpdateFood;

@@ -10,6 +10,9 @@ import FoodDetails from "../Pages/FoodDetails";
 import Error from "../Pages/Error";
 import Purchase from "../Pages/Purchase";
 import PrivateRoute from "./PrivateRoute";
+import MyAddedFood from "../Pages/MyAddedFood";
+import UpdateFood from "../Pages/UpdateFood";
+import MyPurchasedFood from "../Pages/MyPurchasedFood";
 
 const routes = createBrowserRouter([
   {
@@ -52,6 +55,32 @@ const routes = createBrowserRouter([
             <AddFood />
           </PrivateRoute>
         ),
+      },
+      {
+        path: "/myaddedfood",
+        element: (
+          <PrivateRoute>
+            <MyAddedFood />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "/mypurchasedfood",
+        element: (
+          <PrivateRoute>
+            <MyPurchasedFood />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "/update/:id",
+        element: (
+          <PrivateRoute>
+            <UpdateFood />
+          </PrivateRoute>
+        ),
+        loader: ({ params }) =>
+          fetch(`${import.meta.env.VITE_API_URL}/food/${params.id}`),
       },
       {
         path: "/login",

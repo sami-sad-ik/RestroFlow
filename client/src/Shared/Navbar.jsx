@@ -140,10 +140,12 @@ const Navbar = () => {
               Add a food item
             </NavLink>
             <NavLink
+              to={"/myaddedfood"}
               className={`py-2  rounded-md px-2 transition-colors duration-300 transform font-semibold hover:bg-gray-300 hover:text-blue-500  md:mx-2`}>
               My added food items
             </NavLink>
             <NavLink
+              to={"/mypurchasedfood"}
               className={`py-2  rounded-md px-2 transition-colors duration-300 transform font-semibold hover:bg-gray-300  hover:text-blue-500  md:mx-2`}>
               My ordered food items
             </NavLink>
