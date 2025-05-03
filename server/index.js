@@ -98,11 +98,21 @@ async function run() {
       res.send(result);
     });
 
+    //post purchase data
     app.post("/purchase", async (req, res) => {
       const purchaseData = req.body;
       const result = await purchaseCollection.insertOne(purchaseData);
+      const foodQuery = { _id: new ObjectId(purchaseData.foodId) };
+      const updatedDoc = {
+        $inc: { quantity: -purchaseData.purchasedQuantity },
+      };
+      const updateQuantity = await foodCollection.updateOne(
+        foodQuery,
+        updatedDoc
+      );
       res.send(result);
     });
+
     // Send a ping to confirm a successful connection
     // await client.db("admin").command({ ping: 1 });
     console.log(
