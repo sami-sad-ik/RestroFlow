@@ -28,7 +28,9 @@ const routes = createBrowserRouter([
         path: "/food/:id",
         element: <FoodDetails />,
         loader: ({ params }) =>
-          fetch(`${import.meta.env.VITE_API_URL}/food/${params.id}`),
+          fetch(`${import.meta.env.VITE_API_URL}/food/${params.id}`, {
+            credentials: "include",
+          }),
       },
       {
         path: "/purchase/:id",
@@ -38,11 +40,14 @@ const routes = createBrowserRouter([
           </PrivateRoute>
         ),
         loader: ({ params }) =>
-          fetch(`${import.meta.env.VITE_API_URL}/food/${params.id}`),
+          fetch(`${import.meta.env.VITE_API_URL}/food/${params.id}`, {
+            credentials: "include",
+          }),
       },
       {
         path: "/all-foods",
         element: <AllFoods />,
+        loader: () => fetch(`${import.meta.env.VITE_API_URL}/all-foods`),
       },
       {
         path: "/gallery",
@@ -80,7 +85,9 @@ const routes = createBrowserRouter([
           </PrivateRoute>
         ),
         loader: ({ params }) =>
-          fetch(`${import.meta.env.VITE_API_URL}/food/${params.id}`),
+          fetch(`${import.meta.env.VITE_API_URL}/food/${params.id}`, {
+            credentials: "include",
+          }),
       },
       {
         path: "/login",

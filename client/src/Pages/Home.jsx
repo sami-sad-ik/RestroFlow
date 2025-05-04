@@ -1,11 +1,11 @@
 import Banner from "../Components/Banner";
-import TopJobs from "../Components/TopJobs";
+import TopFoods from "../Components/TopFoods";
 
 const Home = () => {
   return (
     <div>
       <Banner />
-      <TopJobs />
+      <TopFoods />
     </div>
   );
 };

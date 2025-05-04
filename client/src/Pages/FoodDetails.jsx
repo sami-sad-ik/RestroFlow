@@ -43,7 +43,7 @@ const FoodDetails = () => {
               <div className="">
                 <h1 className="text-base font-normal">
                   <span className="text-base font-bold">Owner :</span>{" "}
-                  {owner.name}
+                  {owner?.name}
                 </h1>
               </div>
             </div>

@@ -23,6 +23,7 @@ const AddFood = () => {
       quantity,
       price,
       description,
+      purchaseCount: 0,
       owner: {
         name: user?.displayName,
         email: user?.email,

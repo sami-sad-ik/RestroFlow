@@ -11,6 +11,7 @@ import { createContext } from "react";
 import auth from "../Firebase/Firebase.config";
 import { useState } from "react";
 import { useEffect } from "react";
+import axios from "axios";
 
 export const AuthContext = createContext();
 
@@ -39,13 +40,22 @@ const AuthProvider = ({ children }) => {
     return signOut(auth);
   };
 
+  // state change
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       if (currentUser) {
-        setUser(currentUser);
-        console.log("user -->", currentUser);
-        setLoading(false);
+        await axios.post(
+          `${import.meta.env.VITE_API_URL}/jwt`,
+          {
+            email: currentUser?.email,
+          },
+          { withCredentials: true }
+        );
       }
+      setUser(currentUser);
+
+      console.log("user -->", currentUser);
+      setLoading(false);
     });
     return () => unsubscribe();
   }, []);

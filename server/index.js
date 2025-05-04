@@ -1,5 +1,7 @@
 const express = require("express");
 const cors = require("cors");
+const jwt = require("jsonwebtoken");
+const cookieparser = require("cookie-parser");
 const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 const port = process.env.PORT || 7000;
 const app = express();
@@ -13,6 +15,21 @@ const corsOptions = {
 //middlewares
 app.use(cors(corsOptions));
 app.use(express.json());
+app.use(cookieparser());
+
+const verifyToken = (req, res, next) => {
+  const token = req.cookies?.token;
+  if (!token) {
+    return res.status(401).send({ message: "Unauthorized access!" });
+  }
+  jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
+    if (err) {
+      res.status(401).send({ message: "Unauthorized access!" });
+    }
+    req.user = decoded;
+    next();
+  });
+};
 
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.bgu1g.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
 
@@ -30,15 +47,40 @@ async function run() {
     const foodCollection = client.db("RestroFlow").collection("food");
     const purchaseCollection = client.db("RestroFlow").collection("purchase");
 
+    //jwt
+    app.post("/jwt", async (req, res) => {
+      const user = req.body;
+      const token = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {
+        expiresIn: "2hr",
+      });
+      res
+        .cookie("token", token, {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === "production",
+          sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
+        })
+        .send({ success: true });
+    });
+
     // Connect the client to the server	(optional starting in v4.7)
     // await client.connect();
 
-    app.get("/foods", async (req, res) => {
+    app.get("/top-foods", async (req, res) => {
+      const result = await foodCollection
+        .find()
+        .sort({ purchaseCount: -1 })
+        .limit(3)
+        .toArray();
+      res.send(result);
+    });
+
+    //all foods
+    app.get("/all-foods", async (req, res) => {
       const result = await foodCollection.find().toArray();
       res.send(result);
     });
 
-    app.get("/food/:id", async (req, res) => {
+    app.get("/food/:id", verifyToken, async (req, res) => {
       const id = req.params.id;
       const query = { _id: new ObjectId(id) };
       const result = await foodCollection.findOne(query);
@@ -46,23 +88,31 @@ async function run() {
     });
 
     //get food added by specific user
-    app.get("/foods/:email", async (req, res) => {
+    app.get("/foods/:email", verifyToken, async (req, res) => {
+      const tokenEmail = req.user?.email;
       const email = req.params.email;
+      if (tokenEmail !== email) {
+        res.status(401).send({ message: "Forbidden access!" });
+      }
       const query = { "owner.email": email };
       const result = await foodCollection.find(query).toArray();
       res.send(result);
     });
 
     //get food purchased by specific user
-    app.get("/purchased/:email", async (req, res) => {
+    app.get("/purchased/:email", verifyToken, async (req, res) => {
+      const tokenEmail = req.user?.email;
       const email = req.params.email;
+      if (tokenEmail !== email) {
+        res.status(401).send({ message: "Forbidden access!" });
+      }
       const query = { email };
       const result = await purchaseCollection.find(query).toArray();
       res.send(result);
     });
 
     //update foods
-    app.put("/food/:id", async (req, res) => {
+    app.put("/food/:id", verifyToken, async (req, res) => {
       const foodData = req.body;
       const id = req.params.id;
       const query = { _id: new ObjectId(id) };
@@ -104,7 +154,10 @@ async function run() {
       const result = await purchaseCollection.insertOne(purchaseData);
       const foodQuery = { _id: new ObjectId(purchaseData.foodId) };
       const updatedDoc = {
-        $inc: { quantity: -purchaseData.purchasedQuantity },
+        $inc: {
+          quantity: -purchaseData.purchasedQuantity,
+          purchaseCount: purchaseData.purchasedQuantity,
+        },
       };
       const updateQuantity = await foodCollection.updateOne(
         foodQuery,

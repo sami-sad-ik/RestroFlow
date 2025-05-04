@@ -85,7 +85,7 @@ const MyPurchasedFood = () => {
                       <td className="px-12 py-3 text-sm font-medium whitespace-nowrap">
                         <div className="px-12 py-3 text-sm font-normal text-center rtl:text-right ">
                           <h2 className="text-sm text-center font-normal">
-                            {food.owner}
+                            {food?.owner}
                           </h2>
                         </div>
                       </td>

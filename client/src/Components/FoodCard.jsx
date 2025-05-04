@@ -1,9 +1,9 @@
 import { Link } from "react-router-dom";
 
-const JobCard = ({ food }) => {
-  const { _id, foodName, foodImage, category, price } = food;
+const FoodCard = ({ food }) => {
+  const { _id, foodName, foodImage, category, price, quantity } = food;
   return (
-    <div className="max-w-xs p-3 overflow-hidden bg-base-200 hover:scale-[102%] duration-200 rounded-md shadow-lg ">
+    <div className="max-w-xs p-3 overflow-hidden bg-base-200 hover:scale-[101%] duration-200 rounded-md shadow-lg ">
       <div className="relative">
         <img
           className="object-cover w-72 h-44 rounded-md "
@@ -15,7 +15,10 @@ const JobCard = ({ food }) => {
         </p>
       </div>
       <div className="px-4 py-2">
-        <p className="text-lg font-bold  uppercase ">{foodName}</p>
+        <p className="text-lg font-bold  uppercase mb-1">{foodName}</p>
+        <p>
+          <span className="font-semibold">{quantity}</span> Available
+        </p>
       </div>
 
       <div className="flex items-center justify-between px-4 py-2 ">
@@ -32,4 +35,4 @@ const JobCard = ({ food }) => {
   );
 };
 
-export default JobCard;
+export default FoodCard;
