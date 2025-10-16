@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import useAxiosSecure from "../Hooks/useAxiosSecure";
 import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 
 const MyAddedFood = () => {
   const [foods, setFoods] = useState([]);
@@ -29,6 +30,9 @@ const MyAddedFood = () => {
   };
   return (
     <section className="container px-4 mx-auto">
+      <Helmet>
+        <title>RestroFlow | My Added Food</title>
+      </Helmet>
       <div className="flex items-center gap-x-3">
         <h2 className="text-lg font-medium text-gray-800 ">Your Added Foods</h2>
 

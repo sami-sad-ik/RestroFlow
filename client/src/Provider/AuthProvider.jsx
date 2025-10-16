@@ -13,7 +13,7 @@ import { useState } from "react";
 import { useEffect } from "react";
 import axios from "axios";
 
-export const AuthContext = createContext();
+export const AuthContext = createContext(null);
 
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
@@ -54,7 +54,6 @@ const AuthProvider = ({ children }) => {
       }
       setUser(currentUser);
 
-      console.log("user -->", currentUser);
       setLoading(false);
     });
     return () => unsubscribe();

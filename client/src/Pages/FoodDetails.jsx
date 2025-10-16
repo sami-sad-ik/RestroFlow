@@ -1,3 +1,4 @@
+import { Helmet } from "react-helmet-async";
 import { Link, useLoaderData } from "react-router-dom";
 
 const FoodDetails = () => {
@@ -13,6 +14,9 @@ const FoodDetails = () => {
   } = useLoaderData();
   return (
     <section className="">
+      <Helmet>
+        <title>RestroFlow | {foodName}</title>
+      </Helmet>
       <div className="container px-6 py-10 mx-auto">
         <h1 className="text-2xl font-semibold capitalize lg:text-3xl">
           {foodName}

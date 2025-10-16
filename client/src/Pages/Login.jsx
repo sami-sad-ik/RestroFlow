@@ -1,6 +1,7 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import useAuth from "../Hooks/useAuth";
 import toast from "react-hot-toast";
+import { Helmet } from "react-helmet-async";
 
 const Login = () => {
   const { signInUser, signInWithGoogle } = useAuth();
@@ -13,8 +14,7 @@ const Login = () => {
     const email = form.email.value;
     const password = form.password.value;
     try {
-      const result = await signInUser(email, password);
-      console.log(result.user);
+      await signInUser(email, password);
       toast.success("Successfully signed in");
       navigate(to);
     } catch (err) {
@@ -31,6 +31,9 @@ const Login = () => {
   };
   return (
     <section className="">
+      <Helmet>
+        <title>RestroFlow | Login</title>
+      </Helmet>
       <div className="container flex items-center justify-center min-h-screen px-6 mx-auto">
         <form
           onSubmit={handleLogin}

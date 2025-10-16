@@ -2,6 +2,7 @@ import { useLoaderData } from "react-router-dom";
 import useAuth from "../Hooks/useAuth";
 import useAxiosSecure from "../Hooks/useAxiosSecure";
 import toast from "react-hot-toast";
+import { Helmet } from "react-helmet-async";
 
 const Purchase = () => {
   const { user } = useAuth();
@@ -31,8 +32,8 @@ const Purchase = () => {
       owner_email: owner?.email,
     };
     try {
-      const { data } = await axiosSecure.post("/purchase", purchase);
-      console.log(data);
+      await axiosSecure.post("/purchase", purchase);
+
       toast.success("Successfully purchased");
       form.reset();
     } catch (err) {
@@ -41,6 +42,9 @@ const Purchase = () => {
   };
   return (
     <section className="max-w-4xl mt-5 p-6 mx-auto  rounded-md shadow-lg ">
+      <Helmet>
+        <title>RestroFlow | {foodName}</title>
+      </Helmet>
       <h2 className="text-2xl text-center font-semibold">{foodName}</h2>
 
       <form onSubmit={handlePurchase}>

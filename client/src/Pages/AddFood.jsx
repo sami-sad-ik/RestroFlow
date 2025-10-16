@@ -1,6 +1,7 @@
 import useAuth from "../Hooks/useAuth";
 import toast from "react-hot-toast";
 import useAxiosSecure from "../Hooks/useAxiosSecure";
+import { Helmet } from "react-helmet-async";
 
 const AddFood = () => {
   const { user } = useAuth();
@@ -31,8 +32,7 @@ const AddFood = () => {
     };
 
     try {
-      const { data } = await axiosSecure.post(`/food`, foodDetails);
-      console.log(data);
+      await axiosSecure.post(`/food`, foodDetails);
       toast.success("Food added successfully");
       form.reset();
     } catch (err) {
@@ -41,6 +41,9 @@ const AddFood = () => {
   };
   return (
     <section className="max-w-4xl mt-5 p-6 mx-auto  rounded-md shadow-lg ">
+      <Helmet>
+        <title>RestroFlow | Add Food</title>
+      </Helmet>
       <h2 className="text-2xl text-center font-semibold">Add a Food Item</h2>
 
       <form onSubmit={handleAddFood}>

@@ -3,6 +3,7 @@ import useAxiosSecure from "../Hooks/useAxiosSecure";
 import useAuth from "../Hooks/useAuth";
 import { useEffect } from "react";
 import toast from "react-hot-toast";
+import { Helmet } from "react-helmet-async";
 
 const MyPurchasedFood = () => {
   const [foods, setFoods] = useState([]);
@@ -28,6 +29,9 @@ const MyPurchasedFood = () => {
   };
   return (
     <section className="container px-4 mx-auto">
+      <Helmet>
+        <title>RestroFlow | My Purchase</title>
+      </Helmet>
       <div className="flex items-center gap-x-3">
         <h2 className="text-lg font-medium text-gray-800 ">
           Your Purchased Foods

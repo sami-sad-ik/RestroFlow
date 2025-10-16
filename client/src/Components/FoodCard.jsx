@@ -10,7 +10,7 @@ const FoodCard = ({ food }) => {
           src={foodImage}
           alt="foodImage"
         />
-        <p className="absolute top-2 right-1 text-xs text-black bg-blue-500 font-bold px-3 py-1 rounded-full">
+        <p className="absolute top-2 right-3 text-xs text-black bg-blue-500 font-bold px-3 py-1 rounded-full">
           {category}
         </p>
       </div>

@@ -8,7 +8,11 @@ const app = express();
 require("dotenv").config();
 
 const corsOptions = {
-  origin: ["http://localhost:5173"],
+  origin: [
+    "http://localhost:5173",
+    "http://localhost:5174",
+    "https://restroflow-1b903.web.app",
+  ],
   credentials: true,
 };
 
@@ -76,7 +80,17 @@ async function run() {
 
     //all foods
     app.get("/all-foods", async (req, res) => {
-      const result = await foodCollection.find().toArray();
+      const filter = req.query;
+      console.log(filter);
+      const query = {
+        foodName: { $regex: filter.search, $options: "i" },
+      };
+      const options = {
+        sort: {
+          price: filter.sort === "asc" ? 1 : -1,
+        },
+      };
+      const result = await foodCollection.find(query, options).toArray();
       res.send(result);
     });
 

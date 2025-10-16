@@ -1,6 +1,7 @@
 import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
 import useAuth from "../Hooks/useAuth";
+import { Helmet } from "react-helmet-async";
 
 const Register = () => {
   const { createUser, updateUser } = useAuth();
@@ -17,8 +18,7 @@ const Register = () => {
       return toast.error("Password didn't matched!");
     }
     try {
-      const result = await createUser(email, password);
-      console.log(result.user);
+      await createUser(email, password);
       await updateUser(name, photo);
       toast.success("Sign Up successfull");
     } catch (err) {
@@ -27,6 +27,9 @@ const Register = () => {
   };
   return (
     <section className="">
+      <Helmet>
+        <title>RestroFlow | Register</title>
+      </Helmet>
       <div className="container flex items-center justify-center min-h-screen px-6 mx-auto">
         <form
           onSubmit={handleRegister}

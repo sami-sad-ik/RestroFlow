@@ -7,12 +7,12 @@ const TopFoods = () => {
   const axiosSecure = useAxiosSecure();
   useEffect(() => {
     const getData = async () => {
-      const { data } = await axiosSecure("top-foods");
+      const { data } = await axiosSecure.get("top-foods");
       // console.log(data);
       setFoods(data);
     };
     getData();
-  }, []);
+  }, [axiosSecure]);
   return (
     <div>
       <h1 className="text-3xl font-semibold text-center">Top Selling Foods</h1>
